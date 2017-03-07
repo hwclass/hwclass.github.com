@@ -1,0 +1,10 @@
+.flex-container {
+    display: -webkit-flex;
+    display: flex;
+    background-color: lightgrey;
+}
+
+.flex-item {
+    background-color: dark-grey;
+    margin: 10px;
+}
