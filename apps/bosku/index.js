@@ -12,7 +12,11 @@ app({
     inputSub: "",
     currencyHave: 'TL',
     currencySub: 'TL',
-    total: 0
+    total: 0,
+    currencyApi: '',
+    currencies: {GBP: 0.0},
+    currencyTotal: 'TL',
+    currencyValue: 1
   },
   view: (model, actions) =>
     <div class="flex-container">
@@ -81,11 +85,17 @@ app({
         </ul>
       </p>
       <p class="flex-item">
-        <p>total</p>
-        <p>{model.total}</p>
+        <p>
+          total&nbsp;
+          <select onChange={e => actions.changeCurrencyTotal({ value: e.target.value })}>
+            <option>TL</option>
+            <option>GBP</option>
+            <option>EUR</option>
+          </select>
+        </p>
+        <p>{model.total} {model.currencyTotal}</p>
       </p>
     </div>,
-
   actions: {
     add: model => ({
       inputHave: "",
@@ -117,5 +127,19 @@ app({
     }),
     changeCurrencyHave: (model, {value}) => ({currencyHave: value}),
     changeCurrencySub: (model, {value}) => ({currencySub: value}),
-  }
+    changeCurrencyTotal: (model, {value}) => ({total: parseFloat((model.total === 0 ? 1 :model.total)) * parseFloat(model.currencies[value]), currencyTotal: value}),
+    updateCurrencies: (model, value) => {
+      return ({currencies: Object.assign({}, {GBP: value})});
+      //parseFloat((model.total === 0 ? 1 :model.total)) * parseFloat(value)
+    }
+  },
+  subscriptions: [
+    (_, actions) =>
+      fetch('https://www.doviz.com/api/v1/currencies/all/latest').then(function(response) { 
+        return response.json();
+      }).then(function(currencies) {
+        console.log(currencies[2].selling, currencies[1].selling);
+        actions.updateCurrencies(currencies[2].selling)
+      })
+  ]
 })
