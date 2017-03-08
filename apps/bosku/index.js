@@ -14,7 +14,7 @@ app({
     currencySub: 'TL',
     total: 0,
     currencyApi: '',
-    currencies: {GBP: 0.0},
+    currencies: {TR: 1.0, GBP: 0.0},
     currencyTotal: 'TL',
     currencyValue: 1
   },
@@ -104,7 +104,7 @@ app({
         value: model.inputHave,
         id: model.haves.length + 1
       })),
-      total: parseInt(model.total) + parseInt(model.inputHave)
+      total: (parseFloat(model.total) + parseFloat(model.inputHave)) * model.currencies[model.currencyHave]
     }),
     sub: model => ({
       inputSub: "",
@@ -113,7 +113,7 @@ app({
         value: model.inputSub,
         id: model.haves.length + 1
       }),
-      total: parseInt(model.total - model.inputSub)
+      total: (parseFloat(model.total) - parseFloat(model.inputSub)) * model.currencies[model.currencySub]
     }),
     inputHave: (model, {
       value
@@ -129,7 +129,7 @@ app({
     changeCurrencySub: (model, {value}) => ({currencySub: value}),
     changeCurrencyTotal: (model, {value}) => ({total: parseFloat((model.total === 0 ? 1 :model.total)) * parseFloat(model.currencies[value]), currencyTotal: value}),
     updateCurrencies: (model, value) => {
-      return ({currencies: Object.assign({}, {GBP: value})});
+      return ({currencies: Object.assign({}, {TR: 1.0, GBP: value})});
       //parseFloat((model.total === 0 ? 1 :model.total)) * parseFloat(value)
     }
   },
@@ -141,5 +141,6 @@ app({
         console.log(currencies[2].selling, currencies[1].selling);
         actions.updateCurrencies(currencies[2].selling)
       })
-  ]
+  ],
+  root: document.getElementById("root")
 })
