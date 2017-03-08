@@ -138,7 +138,6 @@ app({
       fetch('https://www.doviz.com/api/v1/currencies/all/latest').then(function(response) { 
         return response.json();
       }).then(function(currencies) {
-        console.log(currencies[2].selling, currencies[1].selling);
         actions.updateCurrencies(currencies[2].selling)
       })
   ],
