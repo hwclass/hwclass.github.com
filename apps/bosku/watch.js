@@ -10,7 +10,10 @@ chokidar.watch('css/**/*.styl')
   .on('change', path => run('build-css'));
 
 chokidar.watch('js/**/*.js')
-  .on('change', path => run('build-js'));
+  .on('change', (path) => {
+	run('test');
+	run('build-js');
+  });
 
 chokidar.watch('public/js/main.js')
   .on('change', path => run('uglify-js'));
