@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 
 //set static dir as public
-const PUBLIC = path.join(__dirname, 'public');
+const PUBLIC = path.join(__dirname, '.');
 app.use(express.static(PUBLIC));
 
 //start server

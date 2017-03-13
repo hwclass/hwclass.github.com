@@ -1,5 +1,4 @@
 import { h, app } from "hyperapp"
-/** @jsx h */
 
 app({
   model: {

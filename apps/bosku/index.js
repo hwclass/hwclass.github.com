@@ -12,7 +12,7 @@ app({
     inputSub: "",
     currencyHave: 'TL',
     currencySub: 'TL',
-    total: 0,
+    total: {TL: 0, GBP: 0},
     currencyApi: '',
     currencies: {TR: 1.0, GBP: 0.0},
     currencyTotal: 'TL',
@@ -32,7 +32,6 @@ app({
           <select onChange={e => actions.changeCurrencyHave({ value: e.target.value })}>
             <option>TL</option>
             <option>GBP</option>
-            <option>EUR</option>
           </select>
         <button onClick={actions.add}>add</button>
       </p>
@@ -64,7 +63,6 @@ app({
         <select onChange={e => actions.changeCurrencySub({ value: e.target.value })}>
           <option>TL</option>
           <option>GBP</option>
-          <option>EUR</option>
         </select>
         <button onClick={actions.sub}>sub</button>
       </p>
@@ -90,10 +88,9 @@ app({
           <select onChange={e => actions.changeCurrencyTotal({ value: e.target.value })}>
             <option>TL</option>
             <option>GBP</option>
-            <option>EUR</option>
           </select>
         </p>
-        <p>{model.total} {model.currencyTotal}</p>
+        <p>{model.total[model.currencyTotal]} {model.currencyTotal}</p>
       </p>
     </div>,
   actions: {
@@ -104,7 +101,10 @@ app({
         value: model.inputHave,
         id: model.haves.length + 1
       })),
-      total: (parseFloat(model.total) + parseFloat(model.inputHave)) * model.currencies[model.currencyHave]
+      total: {
+        TL: parseFloat(model.total.TL) + parseFloat(model.inputHave),
+        GBP: (parseFloat(model.total.GBP) + parseFloat(model.inputHave)) * model.currencies.GBP
+      }
     }),
     sub: model => ({
       inputSub: "",
@@ -113,7 +113,10 @@ app({
         value: model.inputSub,
         id: model.haves.length + 1
       }),
-      total: (parseFloat(model.total) - parseFloat(model.inputSub)) * model.currencies[model.currencySub]
+      total: {
+        TL: parseFloat(model.total.TL) - parseFloat(model.inputSub),
+        GBP: (parseFloat(model.total.GBP) - parseFloat(model.inputSub)) * model.currencies.GBP
+      }
     }),
     inputHave: (model, {
       value
