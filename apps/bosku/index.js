@@ -14,7 +14,7 @@ app({
     currencySub: 'TL',
     total: {TL: 0, GBP: 0},
     currencyApi: '',
-    currencies: {TR: 1.0, GBP: 0.0},
+    currencies: {TR: 1, GBP: 0.0},
     currencyTotal: 'TL',
     currencyValue: 1
   },
@@ -98,12 +98,13 @@ app({
       inputHave: "",
       haves: model.haves.concat(Object.assign({}, {
         currency: model.currencyHave,
+        [model.currencyHave]: model.inputHave,
         value: model.inputHave,
         id: model.haves.length + 1
       })),
       total: {
-        TL: parseFloat(model.total.TL) + parseFloat(model.inputHave),
-        GBP: (parseFloat(model.total.GBP) + parseFloat(model.inputHave)) * model.currencies.GBP
+        TL: parseFloat(model.total[model.currencyHave]) + parseFloat(model.inputHave),
+        GBP: (parseFloat(model.total[model.currencyHave]) + parseFloat(model.inputHave)) * model.currencies.GBP
       }
     }),
     sub: model => ({
@@ -114,8 +115,8 @@ app({
         id: model.haves.length + 1
       }),
       total: {
-        TL: parseFloat(model.total.TL) - parseFloat(model.inputSub),
-        GBP: (parseFloat(model.total.GBP) - parseFloat(model.inputSub)) * model.currencies.GBP
+        TL: parseFloat(model.total[model.currencySub]) - parseFloat(model.inputSub),
+        GBP: (parseFloat(model.total[model.currencySub]) - parseFloat(model.inputSub)) * model.currencies.GBP
       }
     }),
     inputHave: (model, {
@@ -130,7 +131,7 @@ app({
     }),
     changeCurrencyHave: (model, {value}) => ({currencyHave: value}),
     changeCurrencySub: (model, {value}) => ({currencySub: value}),
-    changeCurrencyTotal: (model, {value}) => ({total: parseFloat((model.total === 0 ? 1 :model.total)) * parseFloat(model.currencies[value]), currencyTotal: value}),
+    changeCurrencyTotal: (model, {value}) => ({currencyTotal: value}),
     updateCurrencies: (model, value) => {
       return ({currencies: Object.assign({}, {TR: 1.0, GBP: value})});
       //parseFloat((model.total === 0 ? 1 :model.total)) * parseFloat(value)
