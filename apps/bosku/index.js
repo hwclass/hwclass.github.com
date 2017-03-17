@@ -14,7 +14,7 @@ app({
     currencySub: 'TL',
     total: {TL: 0, GBP: 0},
     currencyApi: '',
-    currencies: {TR: 1, GBP: 0.0},
+    currencies: {TL: 1, GBP: 0.0},
     currencyTotal: 'TL',
     currencyValue: 1
   },
@@ -38,10 +38,7 @@ app({
         <ul>
           {model.haves
             .map(t =>
-              <li id={t.id} style={{
-                color: t.done ? "gray" : "black",
-                textDecoration: t.done ? "line-through" : "none"
-              }}
+              <li id={t.id}
                 onClick={e => actions.toggle({
                   value: t.done,
                   id: t.id
@@ -69,10 +66,7 @@ app({
         <ul>
           {model.subs
             .map(t =>
-              <li id={t.id} style={{
-                color: t.done ? "gray" : "black",
-                textDecoration: t.done ? "line-through" : "none"
-              }}
+              <li id={t.id}
                 onClick={e => actions.toggle({
                   value: t.done,
                   id: t.id
@@ -103,8 +97,8 @@ app({
         id: model.haves.length + 1
       })),
       total: {
-        TL: parseFloat(model.total[model.currencyHave]) + parseFloat(model.inputHave),
-        GBP: (parseFloat(model.total[model.currencyHave]) + parseFloat(model.inputHave)) * model.currencies.GBP
+        TL: (parseFloat(model.total[model.currencyHave]) + parseFloat(model.inputHave)) * model.currencies.TL,
+        GBP: (parseFloat(model.total[model.currencyHave]) + parseFloat(model.inputHave)) / model.currencies.GBP
       }
     }),
     sub: model => ({
@@ -116,7 +110,7 @@ app({
       }),
       total: {
         TL: parseFloat(model.total[model.currencySub]) - parseFloat(model.inputSub),
-        GBP: (parseFloat(model.total[model.currencySub]) - parseFloat(model.inputSub)) * model.currencies.GBP
+        GBP: (parseFloat(model.total[model.currencySub]) - parseFloat(model.inputSub)) / model.currencies.GBP
       }
     }),
     inputHave: (model, {
@@ -133,7 +127,7 @@ app({
     changeCurrencySub: (model, {value}) => ({currencySub: value}),
     changeCurrencyTotal: (model, {value}) => ({currencyTotal: value}),
     updateCurrencies: (model, value) => {
-      return ({currencies: Object.assign({}, {TR: 1.0, GBP: value})});
+      return ({currencies: Object.assign({}, {TL: 1.0, GBP: value})});
       //parseFloat((model.total === 0 ? 1 :model.total)) * parseFloat(value)
     }
   },
